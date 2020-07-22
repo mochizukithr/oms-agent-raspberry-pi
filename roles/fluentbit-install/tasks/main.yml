@@ -1,0 +1,23 @@
+
+- name: Download fluentbit.key
+  get_url:
+    url: https://packages.fluentbit.io/fluentbit.key
+    dest: /tmp/fluentbit.key 
+
+- name: add our server GPG key to your keyring
+  become: true
+  shell: apt-key add /tmp/fluentbit.key 
+
+- name: Update your sources lists
+  become: true
+  lineinfile: dest=/etc/apt/sources.list line="deb https://packages.fluentbit.io/ubuntu/focal focal main"
+    
+- name: apt update
+  become: true
+  apt:
+    update_cache: yes
+
+- name: Install the package "td-agent-bit"
+  become: true
+  apt:
+    name: td-agent-bit

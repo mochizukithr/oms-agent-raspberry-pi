@@ -1,0 +1,9 @@
+---
+
+- name: apply fluentbit install and configuration to all nodes
+  hosts: all
+  remote_user: ubuntu
+
+  roles:
+    - fluentbit-install
+    - fluentbit-setup

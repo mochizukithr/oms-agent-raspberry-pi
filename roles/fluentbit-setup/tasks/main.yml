@@ -1,0 +1,29 @@
+
+- name: Stop service td-agent-bit, if not Stoped
+  become: true
+  service:
+    name: td-agent-bit
+    state: stopped
+
+- name: Config
+  become: true
+  blockinfile:
+    path: /etc/td-agent-bit/td-agent-bit.conf
+    block: |
+      [INPUT]
+          Name     syslog
+          Parser   syslog-rfc3164
+          Port     514
+          Mode     udp
+      [OUTPUT]
+          Name azure
+          Match *
+          Log_Type RasPi
+          Customer_ID {{ Customer_ID }}
+          Shared_Key  {{ Shared_Key }}
+
+- name: Start service td-agent-bit, if not started
+  become: true
+  service:
+    name: td-agent-bit
+    state: started
